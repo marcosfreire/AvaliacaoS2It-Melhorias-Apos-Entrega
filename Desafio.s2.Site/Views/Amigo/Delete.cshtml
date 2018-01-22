@@ -1,0 +1,33 @@
+﻿@model Desafio.s2.App.Service.ViewModels.AmigoViewModel
+
+<h3>Tem certeza que deseja remover?</h3>
+
+<hr />
+
+<div>
+    <a asp-action="Index" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</a>
+</div>
+
+<hr />
+
+<div>
+    <h4></h4>
+
+    @Html.Partial("_detalhes.cshtml", Model)
+
+    <form asp-action="Delete">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

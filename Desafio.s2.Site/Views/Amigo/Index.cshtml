@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Desafio.s2.App.Service.ViewModels.AmigoViewModel>
+
+@{
+    ViewData["Title"] = "Lista de Amigos";
+}
+
+<style>
+    .table > thead > tr > th {
+        text-align: center;
+    }
+
+    .table > tbody > tr > td {
+        text-align: center;
+    }
+</style>
+<h2>Lista de amigos</h2>
+
+<p class="pull-right">
+    <a title="Cadastrar novo amigo" data-toggle="tooltip" class="btn btn-primary" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Novo</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="40%">
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td width="40%">
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                            <span title="Ver detalhes" data-toggle="tooltip" class="glyphicon glyphicon-search"></span>
+                        </a>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
+                            <span title="Editar" data-toggle="tooltip" class="glyphicon glyphicon-pencil"></span>
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                            <span title="Excluir" data-toggle="tooltip" class="glyphicon glyphicon-remove"></span>
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="3">Nenhum registro encontrado</td></tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    <script>
+        ConfigureToastr();
+    </script>
+
+    @{
+        if (TempData["RetornoPost"] != null)
+        {
+            var notificacao = TempData["RetornoPost"].ToString().Split(',');
+
+            <script>
+                toastr["@notificacao[0]"]("@notificacao[1]");
+            </script>
+        }
+    }
+}

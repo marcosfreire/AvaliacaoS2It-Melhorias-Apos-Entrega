@@ -1,0 +1,54 @@
+﻿@model Desafio.s2.App.Service.ViewModels.AmigoViewModel
+<style>
+    .table > thead > tr > th {
+        text-align: center;
+    }
+
+    .table > tbody > tr > td {
+        text-align: center;
+    }
+</style>
+
+<div class="form-group">
+    <label class="control-label">Nome:</label>
+    <span>@Model.Nome</span>
+</div>
+<div class="form-group">
+    <label class="control-label">Email:</label>
+    <span>@Model.Email</span>
+</div>
+
+@if (Model.Jogos.Any())
+{
+
+    <p>
+        <a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Consultar jogos emprestados
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+
+            <table class="table table-striped">
+                <tr>
+                    <td width="60%">Nome</td>
+                    <td>Capa</td>
+                </tr>
+
+                @foreach (var jogo in Model.Jogos)
+                {
+                    <tr>
+                        <td><div style="padding-top:40px;">@jogo.Nome</div></td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(jogo.ThumbnailCapaJogo))
+                            {
+                                <img src="@jogo.ThumbnailCapaJogo" title="@jogo.Nome" width="100" height="100" class="img-circle" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+}

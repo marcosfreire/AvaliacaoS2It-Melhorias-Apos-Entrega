@@ -1,0 +1,25 @@
+﻿@model Desafio.s2.App.Service.ViewModels.AmigoViewModel
+
+<hr />
+
+<div>
+    <a asp-action="Index" class="btn btn-success"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</a>
+</div>
+
+<hr />
+
+<div>
+    <h4>Detalhes</h4>
+    <hr />
+
+    @Html.Partial("_detalhes.cshtml", Model)
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

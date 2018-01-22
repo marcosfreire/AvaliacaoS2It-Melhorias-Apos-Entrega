@@ -1,0 +1,39 @@
+﻿@model Desafio.s2.Infra.CrossCutting.Identity.Models.ManageViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData.AddActivePage(ManageNavPages.Index);
+}
+
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <div class="input-group">
+                    <input asp-for="Username" class="form-control" readonly />
+                    <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <div class="input-group">
+                    <input asp-for="Email" class="form-control" readonly />
+                    <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Salvar</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

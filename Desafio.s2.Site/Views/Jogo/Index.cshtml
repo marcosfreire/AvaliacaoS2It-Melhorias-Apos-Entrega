@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Desafio.s2.App.Service.ViewModels.JogoViewModel>
+
+<style>
+    .table > thead > tr > th {
+        text-align: center;
+    }
+
+    .table > tbody > tr > td {
+        text-align: center;
+    }
+</style>
+
+<h2>Lista de jogos</h2>
+
+<p class="pull-right">
+    <a title="Cadastrar novo jogo" data-toggle="tooltip" class="btn btn-primary" asp-action="Create"><span class="glyphicon glyphicon-plus"></span> Novo</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+
+            <th>
+                <span>Nome</span>
+            </th>
+            <th>
+                <span>Categoria</span>
+            </th>
+            <th>Emprestado?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                    </td>
+                    <td>
+                        @{ var emprestado = item.EmprestadoParaId == Guid.Empty || item.EmprestadoParaId == null;
+                            var descricao = emprestado ? "Não" : "Sim"; }
+                        <span> @descricao</span>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                            <span title="Ver detalhes" data-toggle="tooltip" class="glyphicon glyphicon-search"></span>
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">
+                            <span title="Editar" data-toggle="tooltip" class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                            <span title="Excluir" data-toggle="tooltip" class="glyphicon glyphicon-remove"></span>
+                        </a>
+                        <a asp-action="Emprestar" asp-route-id="@item.Id" class="btn btn-warning">
+                            <span title="Gerenciar" data-toggle="tooltip" class="glyphicon glyphicon-th-list"></span>
+                        </a>
+                    </td>
+                </tr>}
+        }
+        else
+        {
+            <tr><td colspan="4">Nenhum registro encontrado</td></tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    <script>
+        ConfigureToastr();
+    </script>
+
+    @{
+        if (TempData["RetornoPost"] != null)
+        {
+            var notificacao = TempData["RetornoPost"].ToString().Split(',');
+
+            <script>
+                toastr["@notificacao[0]"]("@notificacao[1]");
+            </script>
+        }
+    }
+}

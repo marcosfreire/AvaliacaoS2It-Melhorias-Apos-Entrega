@@ -1,0 +1,41 @@
+﻿@model Desafio.s2.App.Service.ViewModels.JogoViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Editar jogo</h2>
+
+<hr />
+
+<div>
+    <a asp-action="Index" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</a>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Id" type="hidden" class="form-control" />
+            </div>
+            @Html.Partial("_saveUpdate.cshtml", Model)
+            <div class="form-group">
+                <input type="submit" value="Atualizar" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>    
+}

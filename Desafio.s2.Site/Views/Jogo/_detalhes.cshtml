@@ -1,0 +1,42 @@
+﻿@model Desafio.s2.App.Service.ViewModels.JogoViewModel
+<style type="text/css">
+    .box {
+        box-shadow: 2px 2px 2px #808080;
+        border: 1px solid gray;
+        border-radius: 10px;
+        padding: 10px;
+    }
+</style>
+<div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label class="control-label">Nome:</label>
+            <span>@Model.Nome</span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Categoria:</label>
+            <span>@Model.Categoria.Nome</span>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ThumbnailCapaJogo))
+        {
+            <div class="form-group">
+                <img src="@Model.ThumbnailCapaJogo" alt="Capa" width="200" height="200" class="img-circle" />
+            </div>
+        }
+    </div>
+    <div class="col-lg-9">
+        @if (Model.EmprestadoParaId != Guid.Empty && Model.EmprestadoPara != null)
+        {
+            <div class="box">
+                <div class="form-group">
+
+                    <label class="control-label">Jogo emprestado para:</label>
+                    <p>@Model.EmprestadoPara.Nome</p>
+                    <p>@Model.EmprestadoPara.Email</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

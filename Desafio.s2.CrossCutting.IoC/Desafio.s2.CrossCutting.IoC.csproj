@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Desafio.s2.App.Service\Desafio.s2.App.Service.csproj" />
+    <ProjectReference Include="..\Desafio.s2.Data\Desafio.s2.Data.csproj" />
+    <ProjectReference Include="..\Desafio.s2.Domain\Desafio.s2.Domain.csproj" />
+    <ProjectReference Include="..\Desafio.s2.Infra.CrossCutting.Identity\Desafio.s2.Infra.CrossCutting.Identity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

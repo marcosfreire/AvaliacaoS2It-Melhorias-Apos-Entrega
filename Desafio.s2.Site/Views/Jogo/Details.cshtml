@@ -1,0 +1,21 @@
+﻿@model Desafio.s2.App.Service.ViewModels.JogoViewModel
+
+<h3>Detalhes</h3>
+<hr />
+
+<div>
+    <a asp-action="Index" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>Voltar</a>
+</div>
+
+<hr />
+
+@Html.Partial("_detalhes.cshtml", Model)
+
+@section Scripts {
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}
