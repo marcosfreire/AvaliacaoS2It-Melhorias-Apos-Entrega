@@ -16,11 +16,11 @@ namespace Desafio.s2.Site.Controllers
 
         private readonly IAmigoAppService _amigoAppService;
 
-        public AmigoController(IAmigoAppService service,
-                               IUser user,
-                               INotificationHandler<DomainNotification> notification,
-                               IMediatorHandler mediatr)
-            : base(notification, user, mediatr)
+        public AmigoController(
+            IAmigoAppService service,
+            IUser user,
+            INotificationHandler<DomainNotification> notification,
+            IMediatorHandler mediatr) : base(notification, user, mediatr)
         {
             _amigoAppService = service;
         }
