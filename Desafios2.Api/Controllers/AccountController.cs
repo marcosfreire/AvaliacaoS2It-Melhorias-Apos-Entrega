@@ -41,12 +41,7 @@ namespace Desafios2.Api.Controllers
             _tokenDescriptor = tokenDescriptor;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
-
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("login")]
-        public async Task<IActionResult> Login() => Response("Login");
-
+        
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
@@ -73,7 +68,7 @@ namespace Desafios2.Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]
+        [Route("nova-conta")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
