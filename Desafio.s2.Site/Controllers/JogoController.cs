@@ -164,6 +164,8 @@ namespace Desafio.s2.Site.Controllers
 
             _jogoAppService.Atualizar(jogo);
 
+            TempData["RetornoPost"] = "warning,Jogo emprestado com sucesso!";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -177,6 +179,8 @@ namespace Desafio.s2.Site.Controllers
             jogo.EmprestadoParaId = null;
 
             _jogoAppService.Atualizar(jogo);
+
+            TempData["RetornoPost"] = "success,Jogo devoldido com sucesso!";
 
             return RedirectToAction(nameof(Index));
         }
