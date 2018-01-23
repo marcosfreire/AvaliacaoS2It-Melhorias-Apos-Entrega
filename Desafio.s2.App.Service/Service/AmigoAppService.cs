@@ -66,7 +66,8 @@ namespace Desafio.s2.App.Service.Service
 
         public IEnumerable<AmigoViewModel> ObterTodos()
         {
-            var amigos = _repository.ObterTodos();
+            var amigos = _repository.ObterTodos().ToList();
+            amigos.ForEach(a => a.Jogos?.ToList()?.ForEach(b => b.EmprestadoPara = null));
             return _mapper.Map<IEnumerable<Amigo>, IEnumerable<AmigoViewModel>>(amigos);
         }
     }

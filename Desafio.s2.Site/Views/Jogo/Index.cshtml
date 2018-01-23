@@ -26,8 +26,8 @@
             <th>
                 <span>Categoria</span>
             </th>
-            <th>Emprestado?</th>
-            <th></th>
+            <th>Jogo esta emprestado?</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -45,7 +45,7 @@
                     <td>
                         @{ var emprestado = item.EmprestadoParaId == Guid.Empty || item.EmprestadoParaId == null;
                             var descricao = emprestado ? "Não" : "Sim"; }
-                        <span> @descricao</span>
+                        <span data-toggle="tooltip" alt="Emprestado"> @descricao</span>
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">

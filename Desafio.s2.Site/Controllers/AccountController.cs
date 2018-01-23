@@ -111,9 +111,7 @@ namespace Desafio.s2.Site.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
 
                     _emaiSettings.ToEmail = model.Email;
-                    await _emailSender.SendEmailConfirmationAsync(_emaiSettings, callbackUrl);
-
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _emailSender.EnviarEmailConfiirmacaoEmailAsync(_emaiSettings, callbackUrl);
 
                     _logger.LogInformation("Usuario criou nova conta/password.");
 
@@ -165,7 +163,7 @@ namespace Desafio.s2.Site.Controllers
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
 
                 _emaiSettings.ToEmail = model.Email;
-                await _emailSender.SendEmailForgotPasswordAsync(_emaiSettings, callbackUrl);
+                await _emailSender.EnviarEmailEsqueciMinhaSenhaAsync(_emaiSettings, callbackUrl);
 
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }

@@ -1,15 +1,12 @@
 ﻿@model Desafio.s2.App.Service.ViewModels.JogoViewModel
 
 <h2>Gerenciar jogo</h2>
-
 <hr />
 
 <div>
     <a asp-action="Index" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</a>
 </div>
-
 <hr />
-
 <div id="modal" class="modal fade">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -29,10 +26,8 @@
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-4">
-
 
         @if (Model.EmprestadoParaId == Guid.Empty || Model.EmprestadoParaId == null)
         {
@@ -42,7 +37,6 @@
                     <span>Selecione o amigo para emprestar:</span>
                     <select asp-for="EmprestadoParaId" class="form-control" asp-items="@(new SelectList(ViewBag.Amigos,"Id","Nome"))"></select>
                 </div>
-
                 <div class="form-group">
                     <input type="submit" value="Emprestar" class="btn btn-success" />
                 </div>
@@ -57,16 +51,36 @@
                     <p><strong>Nome: </strong>@Model.EmprestadoPara.Nome</p>
                     <p><strong>E-mail: </strong> @Model.EmprestadoPara.Email</p>
                 </div>
-
                 <div class="form-group">
                     <input type="button" onclick="return ConfirmarDevolucao();" value="Devolver" class="btn btn-warning" />
                 </div>
             </form>
         }
+    </div>
+    <div class="col-md-8">
+        @if (Model.EmprestadoParaId != Guid.Empty && Model.EmprestadoParaId != null)
+        {
+        <form asp-action="SolicitarDevolucao" method="post">
 
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="Nome" type="hidden" />
+            <input asp-for="EmprestadoPara.Nome" type="hidden" />
+            <input asp-for="EmprestadoPara.Email" type="hidden" />
+
+            <input asp-for="ThumbnailCapaJogo" type="hidden" />
+            <input asp-for="EmprestadoParaId" type="hidden" />
+
+            <div class="form-group">
+                <h3>Deseja solicitar a devolução do jogo?</h3>
+                <div class="form-group">
+                    <input type="submit" value="Clique aqui" class="btn btn-success" />
+                </div>
+            </div>
+
+        </form>
+        }
     </div>
 </div>
-
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -77,17 +91,29 @@
         });
     </script>
 
-    <script type="text/javascript">
+    <script>
+        ConfigureToastr();
+    </script>
 
+    <script type="text/javascript">
         function ConfirmarDevolucao() {
 
             $("#modal").modal();
             return false;
         }
-
         function Devolver() {
             $("#formDevolver").submit();
         }
-
     </script>
+
+    @{
+        if (TempData["Devolucao"] != null)
+        {
+            var notificacao = TempData["Devolucao"].ToString().Split(',');
+
+            <script>
+                toastr["@notificacao[0]"]("@notificacao[1]");
+            </script>
+        }
+    }
 }

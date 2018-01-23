@@ -4,28 +4,40 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Desafio.s2.Domain.Extensions;
 using Desafio.s2.Domain.Interfaces;
+using Microsoft.Extensions.Options;
 using Desafio.s2.App.Service.Interfaces;
 using Desafio.s2.App.Service.ViewModels;
 using Desafio.s2.Domain.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Desafio.s2.Domain.Core.Notifications;
+using Desafio.s2.Infra.CrossCutting.Identity.Services;
+using Desafio.s2.Site.Services;
+using System.Threading.Tasks;
 
 namespace Desafio.s2.Site.Controllers
 {
     [Authorize]
     public class JogoController : BaseController
     {
+        private readonly IUser _user;
+        private readonly IEmailSender _emailSender;
+        private readonly EmailSettings _emailSettings;
         private readonly IJogoAppService _jogoAppService;
         private readonly IAmigoAppService _amigoAppService;
 
-        public JogoController(IJogoAppService service,
-                              IUser user,
+        public JogoController(IUser user,
+                              IJogoAppService service,
+                              IMediatorHandler mediatr,
+                              IEmailSender emailSender,
                               IAmigoAppService amigoAppService,
-                              INotificationHandler<DomainNotification> notification,
-                              IMediatorHandler mediatr) : base(notification, user, mediatr)
+                              IOptions<EmailSettings> emailSettings,
+                              INotificationHandler<DomainNotification> notification) : base(notification, user, mediatr)
         {
+            _user = user;
             _jogoAppService = service;
+            _emailSender = emailSender;
             _amigoAppService = amigoAppService;
+            _emailSettings = emailSettings.Value;
         }
 
         [HttpGet]
@@ -57,8 +69,8 @@ namespace Desafio.s2.Site.Controllers
 
             _jogoAppService.Adicionar(model);
 
-            TempData["RetornoPost"] = OperacaoValida() 
-                ? "success,Jogo cadastrado com sucesso!" 
+            TempData["RetornoPost"] = OperacaoValida()
+                ? "success,Jogo cadastrado com sucesso!"
                 : "error,Jogo não cadastrado! Verifique as mensagens";
 
             return RedirectToAction(nameof(Index));
@@ -124,8 +136,8 @@ namespace Desafio.s2.Site.Controllers
 
             _jogoAppService.Remover(id);
 
-            TempData["RetornoPost"] = OperacaoValida() 
-                ? "success,Jogo excluido com sucesso!" 
+            TempData["RetornoPost"] = OperacaoValida()
+                ? "success,Jogo excluido com sucesso!"
                 : "error,Jogo não excluido! Verifique as mensagens";
 
             return RedirectToAction(nameof(Index));
@@ -167,6 +179,24 @@ namespace Desafio.s2.Site.Controllers
             _jogoAppService.Atualizar(jogo);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public ActionResult SolicitarDevolucao(JogoViewModel model)
+        {
+            try
+            {
+                _emailSettings.FromEmail = _user.Name;
+                _emailSender.EnviarEmailCobrancaJogoAsync(_emailSettings, model);
+
+                TempData["Devolucao"] = "success,Devolução de jogo solicitada com sucesso!";
+            }
+            catch
+            {
+                TempData["Devolucao"] = "error,Ops, ocorreu um erro ao solicitar a devolução do jogo!";
+            }
+
+            return View("Emprestar", model);
         }
 
         private void CarregarComboCategoria()

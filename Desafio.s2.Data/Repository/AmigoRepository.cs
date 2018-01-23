@@ -22,6 +22,7 @@ namespace Desafio.s2.Data.Repository
         {
             return Db.Amigos
                 .Where(a => !a.Excluido)
+                .Include(a => a.Jogos)
                 .Where(a => a.IdUsuario == _user.GetUserId())
                 .ToList();
         }

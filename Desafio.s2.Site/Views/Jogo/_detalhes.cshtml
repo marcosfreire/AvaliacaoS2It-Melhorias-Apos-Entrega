@@ -6,27 +6,46 @@
         border-radius: 10px;
         padding: 10px;
     }
+
+    .descricao-jogo {
+        padding-top: 12%;
+    }
+
+    .image {
+        width: 200px;
+        height: 200px;
+        border:1px solid #808080;
+        box-shadow:2px 2px 2px black;
+    }
 </style>
 <div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label class="control-label">Nome:</label>
-            <span>@Model.Nome</span>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label">Categoria:</label>
-            <span>@Model.Categoria.Nome</span>
-        </div>
-
-        @if (!string.IsNullOrEmpty(Model.ThumbnailCapaJogo))
-        {
-            <div class="form-group">
-                <img src="@Model.ThumbnailCapaJogo" alt="Capa" width="200" height="200" class="img-circle" />
+    <div class="col-lg-5">
+        <div class="col-md-6">
+            @if (string.IsNullOrEmpty(Model.ThumbnailCapaJogo))
+            {
+                @Html.Partial("_noImageContent.cshtml")
+            }
+            else
+            {
+                <div class="form-group">
+                <img src="@Model.ThumbnailCapaJogo" alt="Capa" class="image img-circle" />
             </div>
         }
+        </div>
+        <div class="col-md-6 descricao-jogo">
+            <div class="form-group">
+                <label class="control-label">Nome:</label>
+                <span>@Model.Nome</span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Categoria:</label>
+                <span>@Model.Categoria.Nome</span>
+            </div>
+        </div>
+
     </div>
-    <div class="col-lg-9">
+    <div class="col-lg-7">
         @if (Model.EmprestadoParaId != Guid.Empty && Model.EmprestadoPara != null)
         {
             <div class="box">
@@ -39,4 +58,4 @@
             </div>
         }
     </div>
-</div>
+    </div>
