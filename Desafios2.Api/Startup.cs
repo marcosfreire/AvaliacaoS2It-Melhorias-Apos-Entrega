@@ -3,9 +3,9 @@ using System.IO;
 using AutoMapper;
 using Desafio.s2.CrossCutting.IoC;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,11 +13,12 @@ using Desafio.s2.Infra.CrossCutting.Identity.Data;
 using Desafio.s2.Infra.CrossCutting.Identity.Models;
 using Desafio.s2.Infra.CrossCutting.Identity.Services;
 
-namespace Desafio.s2.Site
+namespace Desafios2.Api
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public void ConfigureServices(IServiceCollection services)
@@ -32,6 +33,22 @@ namespace Desafio.s2.Site
             RegisterServices(services);
         }
 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseMvc();
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddMediatR(typeof(Startup));
+            BootStrapper.RegisterServices(services);
+        }
+
         private static void ConfigureFileUpload(IServiceCollection services)
         {
             services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
@@ -40,31 +57,6 @@ namespace Desafio.s2.Site
         private void ConfigureAspNetIdentityDbContext(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-        }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseStaticFiles();
-
-            app.UseAuthentication();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
         }
 
         private static void ConfigureAspnetIdentityPassword(IServiceCollection services)
@@ -78,12 +70,6 @@ namespace Desafio.s2.Site
                 options.Password.RequiredLength = 6;
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-        }
-
-        private static void RegisterServices(IServiceCollection services)
-        {
-            services.AddMediatR(typeof(Startup));
-            BootStrapper.RegisterServices(services);
         }
     }
 }
