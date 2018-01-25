@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 using Desafio.s2.Domain.Amigos;
 using System.Collections.Generic;
 using Desafio.s2.Domain.Interfaces;
+using Desafio.s2.Domain.Core.Interfaces;
 using Desafio.s2.App.Service.Interfaces;
 using Desafio.s2.App.Service.ViewModels;
 using Desafio.s2.Domain.Amigos.Commands;
 using Desafio.s2.Domain.Amigos.Repository;
-using Desafio.s2.Domain.Core.Interfaces;
 
 namespace Desafio.s2.App.Service.Service
 {
@@ -20,7 +20,7 @@ namespace Desafio.s2.App.Service.Service
         private readonly IMediatorHandler _bus;
         private readonly IAmigoRepository _repository;
 
-        public AmigoAppService(IMediatorHandler bus, IAmigoRepository repository, IMapper mapper , IUser user)
+        public AmigoAppService(IMediatorHandler bus, IAmigoRepository repository, IMapper mapper, IUser user)
         {
             _bus = bus;
             _user = user;

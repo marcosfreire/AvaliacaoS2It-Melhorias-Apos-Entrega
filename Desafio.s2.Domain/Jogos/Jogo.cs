@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentValidation;
 using Desafio.s2.Domain.Amigos;
+using Desafio.s2.Domain.Constantes;
 using Desafio.s2.Domain.Core.Models;
 
 namespace Desafio.s2.Domain.Jogos
@@ -8,12 +9,12 @@ namespace Desafio.s2.Domain.Jogos
     public class Jogo : Entity<Jogo>
     {
         private Jogo() { }
-        public Jogo(string nome, Guid categoriaId , Guid idUsuario)
+        public Jogo(string nome, Guid categoriaId, Guid idUsuario)
         {
             Nome = nome;
             Id = Guid.NewGuid();
             IdUsuario = idUsuario;
-            CategoriaId = categoriaId;            
+            CategoriaId = categoriaId;
         }
 
         public string Nome { get; private set; }
@@ -36,6 +37,9 @@ namespace Desafio.s2.Domain.Jogos
 
         public override bool EhValido()
         {
+            ValidarNome();
+            ValidarCategoria();
+            ValidarIdUsuarioLogado();
             ValidationResult = Validate(this);
             return ValidationResult.IsValid;
         }
@@ -48,19 +52,32 @@ namespace Desafio.s2.Domain.Jogos
         private void ValidarNome()
         {
             RuleFor(c => c.Nome)
-                .NotEmpty().WithMessage("O campo Nome deve ser informado")
-                .Length(2, 150).WithMessage("O campo Nome precisa ter entre 2 e 150 caracteres");
+                .NotEmpty().WithMessage(JogoConstantes.NOME_OBRIGATORIO)
+                .Length(2, 150).WithMessage(JogoConstantes.MAX_MIN_LENTH_NOME);
         }
 
         private void ValidarCategoria()
         {
             RuleFor(c => c.CategoriaId)
-                .NotNull().WithMessage("O campo Categoria do jogo deve ser informado");
+                .NotNull().WithMessage(JogoConstantes.CATEGORIA_OBRIGATORIA);
+        }
+
+        private void ValidarIdUsuarioLogado()
+        {
+            RuleFor(c => c.IdUsuario)
+                .NotEqual(Guid.Empty)
+                .WithMessage(JogoConstantes.ID_USUARIO_LOGADO_OBRITORIO);
+        }
+
+        private bool ExisteImagemCapa()
+        {
+            return !string.IsNullOrEmpty(ThumbnailCapaJogo);
         }
 
         public static class JogoFactory
         {
-            public static Jogo NovoJogoCompleto(Guid id, string nome, string thumbnailCapaJogo, Guid categoriaId , Guid? emprestadoParaId , Guid idUsuario)
+            public static Jogo NovoJogoCompleto(Guid id, string nome, string thumbnailCapaJogo,
+                                                Guid categoriaId, Guid? emprestadoParaId, Guid idUsuario)
             {
                 var evento = new Jogo()
                 {

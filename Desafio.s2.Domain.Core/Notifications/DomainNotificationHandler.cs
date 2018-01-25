@@ -20,7 +20,7 @@ namespace Desafio.s2.Domain.Core.Notifications
         {
             return _notifications;
         }
-        
+
         public virtual bool HasNotifications()
         {
             return _notifications.Any();
@@ -36,9 +36,7 @@ namespace Desafio.s2.Domain.Core.Notifications
             return Task.Run(() =>
             {
                 _notifications.Add(notification);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Erro: {notification.Key} - {notification.Value}");
-            });        
+            });
         }
     }
 }

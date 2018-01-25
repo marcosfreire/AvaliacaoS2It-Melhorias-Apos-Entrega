@@ -3,6 +3,7 @@ using FluentValidation;
 using Desafio.s2.Domain.Jogos;
 using System.Collections.Generic;
 using Desafio.s2.Domain.Core.Models;
+using Desafio.s2.Domain.Constantes;
 
 namespace Desafio.s2.Domain.Amigos
 {
@@ -29,6 +30,7 @@ namespace Desafio.s2.Domain.Amigos
         {
             ValidarNome();
             ValidarEmail();
+            ValidarIdUsuarioLogado();
             ValidationResult = Validate(this);
             return ValidationResult.IsValid;
         }
@@ -41,16 +43,21 @@ namespace Desafio.s2.Domain.Amigos
         private void ValidarNome()
         {
             RuleFor(c => c.Nome)
-                .NotEmpty().WithMessage("O campo Nome deve ser informado")
-                .Length(2, 150).WithMessage("O campo Nome precisa ter entre 2 e 150 caracteres");
+                .NotEmpty().WithMessage(AmigoConstantes.NOME_OBRIGATORIO)
+                .Length(2, 150).WithMessage(AmigoConstantes.MAX_MIN_LENTH_NOME);
+        }
+
+        private void ValidarIdUsuarioLogado()
+        {
+            RuleFor(c => c.IdUsuario).NotEqual(Guid.Empty).WithMessage(AmigoConstantes.ID_USUARIO_LOGADO_OBRITORIO);
         }
 
         private void ValidarEmail()
         {
-            RuleFor(c => c.Nome)
-                .NotEmpty().WithMessage("O campo Email deve ser informado")
-                //.EmailAddress().WithMessage("Email inválido")
-                .Length(2, 150).WithMessage("O campo Email precisa ter entre 2 e 150 caracteres");            
+            RuleFor(c => c.Email)
+                .NotEmpty().WithMessage(AmigoConstantes.EMAIL_OBRIGATORIO)
+                .EmailAddress().WithMessage(AmigoConstantes.EMAIL_INVALIDO)
+                .Length(2, 150).WithMessage(AmigoConstantes.MAX_MIN_LENTH_EMAIL);
         }
 
         public static class AmigoFactory

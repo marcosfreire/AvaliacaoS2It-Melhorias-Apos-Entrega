@@ -1,5 +1,6 @@
 ﻿using System;
 using MediatR;
+using Desafio.s2.Site.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Desafio.s2.Domain.Extensions;
@@ -11,8 +12,6 @@ using Desafio.s2.Domain.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Desafio.s2.Domain.Core.Notifications;
 using Desafio.s2.Infra.CrossCutting.Identity.Services;
-using Desafio.s2.Site.Services;
-using System.Threading.Tasks;
 
 namespace Desafio.s2.Site.Controllers
 {
